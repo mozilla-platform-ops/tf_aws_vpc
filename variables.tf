@@ -7,23 +7,23 @@ variable "cidr" {
 }
 
 variable "public_subnets" {
-    description = "A comma delimited list of subnets in CIDR notation for public use"
-    default = ""
+    description = "A list of subnets in CIDR notation for public use"
+    default = []
 }
 
 variable "private_subnets" {
-    description = "A comma delimted list of subnets in CIDR notation for private use"
-    default = ""
+    description = "A list of subnets in CIDR notation for private use"
+    default = []
 }
 
 variable "azs_public" {
-    description = "A comma delimted list of Availablity Zone for each public subnet listed. Element count must match public_subnets"
-    default = ""
+    description = "A list of Availablity Zone for each public subnet listed. Element count must match public_subnets"
+    default = []
 }
 
 variable "azs_private" {
-    description = "A comma delimted list of Availablity Zone for each private subnet listed. Element count must match private_subnets"
-    default = ""
+    description = "A list of Availablity Zone for each private subnet listed. Element count must match private_subnets"
+    default = []
 }
 
 variable "enable_dns_hostnames" {

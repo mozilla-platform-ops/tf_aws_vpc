@@ -27,30 +27,30 @@ resource "aws_route_table" "private" {
 
 resource "aws_subnet" "private" {
   vpc_id = "${aws_vpc.mod.id}"
-  cidr_block = "${element(split(",", var.private_subnets), count.index)}"
-  availability_zone = "${element(split(",", var.azs_private), count.index)}"
-  count = "${length(compact(split(",", var.private_subnets)))}"
-  tags { Name = "${var.name}-private" }
+  cidr_block = "${element(var.private_subnets, count.index)}"
+  availability_zone = "${element(var.azs_private, count.index)}"
+  count = "${length(var.private_subnets)}"
+  tags { Name = "${format("%s-private-%d", var.name, count.index + 1)}" }
 }
 
 resource "aws_subnet" "public" {
   vpc_id = "${aws_vpc.mod.id}"
-  cidr_block = "${element(split(",", var.public_subnets), count.index)}"
-  availability_zone = "${element(split(",", var.azs_public), count.index)}"
-  count = "${length(compact(split(",", var.public_subnets)))}"
-  tags { Name = "${var.name}-public" }
+  cidr_block = "${element(var.public_subnets, count.index)}"
+  availability_zone = "${element(var.azs_public, count.index)}"
+  count = "${length(var.public_subnets)}"
+  tags { Name = "${format("%s-public-%d", var.name, count.index + 1)}" }
 
   map_public_ip_on_launch = true
 }
 
 resource "aws_route_table_association" "private" {
-  count = "${length(compact(split(",", var.private_subnets)))}"
+  count = "${length(var.private_subnets)}"
   subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 
 resource "aws_route_table_association" "public" {
-  count = "${length(compact(split(",", var.public_subnets)))}"
+  count = "${length(var.public_subnets)}"
   subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
